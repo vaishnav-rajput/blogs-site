@@ -4,33 +4,43 @@ import Spinner from "./Spinner";
 
 const Blogs = () => {
 
-    const {posts} = useContext(AppContext)
+    const {posts, loading} = useContext(AppContext)
 
     return(
-        <div>
-                {
-                posts.length === 0 ? 
-                (<div>No Posts Found</div>) :
+        <div className='w-11/12 max-w-[670px] h-screen py-8 flex flex-col gap-y-7 mt-[100px] mb-[170px] justify-center items-center'>
+            {
+                loading ? (<Spinner />) :
+                (
+                    posts.length === 0 ? 
+                (<div><p>No Posts Found</p></div>) :
                 (
                     posts.map((post) => (
                         <div key={post.id}>
-                            <h1>
+                            <h1 className="font-bold text-lg">
                             {post.title}</h1>
-                            <p>By <span>{post.author}</span> on <span>{post.category}</span></p>
-                            <p>Posted on <span>{post.date}</span></p>
-                            <p>
+                            <p className='text-sm mt-[4px]'>By <span className="italic">{post.author}</span> on <span className="underline font-bold">{post.category}</span></p>
+                            <p className='text-sm mt-[4px]'>Posted on <span>{post.date}</span></p>
+                            <p className='text-md mt-[14px]'>
                                 {post.content}
                             </p>
-                            {
-                                (post.tags).map((tag,index) => (
-                                    <span key={index}>{`#${tag} `} </span>
-                                ))
-                            }
+                            <div className='flex gap-x-3'>
+                                    {
+                                    
+                                    (post.tags).map((tag,index) => (
+                                        <span className="text-blue-700 underline font-bold text-xs mt-[5px]" key={index}>{`#${tag} `} </span>
+                                    ))
+                                }
+                            </div>
+                            
                         </div>
 
                     ))
                 ) 
+                )
             }
+                   
+                
+            
             
         
         </div>
