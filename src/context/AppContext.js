@@ -38,7 +38,7 @@ export default function AppContextProvider({children}){
     }
 
     useEffect(() => {
-        
+            
     },[])
     
      function pageChangeHandler(page){

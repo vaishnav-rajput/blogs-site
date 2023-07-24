@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import Spinner from "./Spinner";
+import BlogDetails from "./BlogDetails";
 
 const Blogs = () => {
 
@@ -16,27 +17,7 @@ const Blogs = () => {
           </div>
         ) : (
           posts.map((post) => (
-            <div key={post.id}>
-              <h1 className="font-bold text-lg">{post.title}</h1>
-              <p className="text-sm mt-[4px]">
-                By <span className="italic">{post.author}</span> on{" "}
-                <span className="underline font-bold">{post.category}</span>
-              </p>
-              <p className="text-sm mt-[4px]">
-                Posted on <span>{post.date}</span>
-              </p>
-              <p className="text-md mt-[14px]">{post.content}</p>
-              <div className="flex gap-x-3">
-                {post.tags.map((tag, index) => (
-                  <span
-                    className="text-blue-700 underline font-bold text-xs mt-[5px]"
-                    key={index}
-                  >
-                    {`#${tag} `}{" "}
-                  </span>
-                ))}
-              </div>
-            </div>
+                <BlogDetails key={post.id} post={post}/>
           ))
         )}
       </div>
@@ -44,3 +25,25 @@ const Blogs = () => {
 }
 
 export default Blogs;
+
+{/* <div key={post.id}>
+<h1 className="font-bold text-lg">{post.title}</h1>
+<p className="text-sm mt-[4px]">
+  By <span className="italic">{post.author}</span> on{" "}
+  <span className="underline font-bold">{post.category}</span>
+</p>
+<p className="text-sm mt-[4px]">
+  Posted on <span>{post.date}</span>
+</p>
+<p className="text-md mt-[14px]">{post.content}</p>
+<div className="flex gap-x-3">
+  {post.tags.map((tag, index) => (
+    <span
+      className="text-blue-700 underline font-bold text-xs mt-[5px]"
+      key={index}
+    >
+      {`#${tag} `}{" "}
+    </span>
+  ))}
+</div>
+</div> */}
