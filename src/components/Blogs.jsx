@@ -10,11 +10,13 @@ const Blogs = () => {
     return (
       <div className="w-11/12 max-w-[670px] h-4/5 py-8 flex flex-col gap-y-7 mt-[70px] mb-[70px] justify-center items-center">
         {loading ? (
-          <Spinner />
+                <div className="min-h-[80vh] w-full flex justify-center items-center">
+                <p className="text-center font-bold text-3xl">Loading</p>
+              </div>
         ) : posts.length === 0 ? (
-          <div>
-            <p>No Posts Found</p>
-          </div>
+          <div className="min-h-[80vh] w-full flex justify-center items-center">
+          <p className="text-center font-bold text-3xl">No Blogs Found !</p>
+        </div>
         ) : (
           posts.map((post) => (
                 <BlogDetails key={post.id} post={post}/>

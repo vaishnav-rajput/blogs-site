@@ -15,9 +15,11 @@ const BlogPage = () => {
 
   const blogId = location.pathname.split("/").at(-1)
 
-  async function fetchBlogPosts() {
+  async function fetchRelatedBlogs() {
     setLoading(true)
     let url = `${newBaseUrl}?get-blog?blogId=${blogId}`
+    console.log("Url is ")
+    console.log(url)
     try {
       const res = await fetch(url)
       const data = await res.json()
@@ -33,8 +35,8 @@ const BlogPage = () => {
 
   useEffect(() => {
     if(blogId){
-      fetchBlogPosts()
-    }
+        fetchRelatedBlogs()
+    }   
   }, [location.pathname])
 
   return (
