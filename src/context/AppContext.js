@@ -1,67 +1,63 @@
-import { createContext,  useEffect,  useState } from "react";
-import { baseUrl } from "../baseUrl";
+import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "../baseUrl";
 
 export const AppContext = createContext();
 
-export default function AppContextProvider({children}){
+export default function AppContextProvider({ children }) {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(null);
+  const navigate = useNavigate();
 
-    const [page, setPage] = useState(1);
-    const [loading, setLoading] = useState(false);
-    const [posts, setPosts] = useState([]);
-    const [totalPages, setTotalPages] = useState(null);
-    const navigate = useNavigate()
-
-
-    async function fetchBlogPosts(page = 1, tag = null, category){
-        setLoading(true);
-        let url = `${baseUrl}?page=${page}`;
-        if(tag){
-            url += `&tag=${tag}`;
-        }
-        if(category){
-            url += `&category=${category}`;
-        }
-        try {
-            console.log(url)
-            const response = await fetch(url);
-            const output = await response.json();
-            if (!output.posts || output.posts.length === 0)
-            throw new Error("Something Went Wrong");
-            setPage(output.page);
-            setPosts(output.posts)
-            setTotalPages(output.totalPages)
-        } catch (error) {
-            console.log("api call failed")
-            setPage(1)
-            setPosts([])
-            setTotalPages(null) 
-        }
-        setLoading(false)
+  // Fetch Blog Data
+  const fetchBlogPosts = async (page = 1, tag=null, category) => {
+    setLoading(true);
+    let url = `${baseUrl}?page=${page}`;
+    if(tag) {
+      url += `&tag=${tag}`;
     }
-
-
-    
-     function pageChangeHandler(page){
-        navigate({search: `?page=${page}`})
-        setPage(page)
+    if(category) {
+      url += `&category=${category}`;
     }
-
-    const value = {
-        page,
-        setPage,
-        loading,
-        setLoading,
-        posts, 
-        setPosts,
-        totalPages,
-        setTotalPages,
-        fetchBlogPosts,
-        pageChangeHandler
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      if (!data.posts || data.posts.length === 0)
+        throw new Error("Something Went Wrong");
+      console.log("Api Response", data);
+      setPage(data.page);
+      setPosts(data.posts);
+      setTotalPages(data.totalPages);
+    } catch (error) {
+      console.log("Error in Fetching BlogPosts", error);
+      setPage(1);
+      setPosts([]);
+      setTotalPages(null);
     }
+    setLoading(false);
+  };
 
+  // Handle When Next and Previous button are clicked
+  const handlePageChange = (page) => {
+    navigate( { search: `?page=${page}`});
+    setPage(page);
+  };
 
-return <AppContext.Provider value={value}>
-{children}
-</AppContext.Provider>
+  const value = {
+    posts,
+    setPosts,
+    loading,
+    setLoading,
+    page,
+    setPage,
+    totalPages,
+    setTotalPages,
+    fetchBlogPosts,
+    handlePageChange,
+  };
+
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
+
